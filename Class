@@ -1,0 +1,192 @@
+import java.util.LinkedList;
+
+public class MyDoublyLinkedList <E> {
+    Node head;
+    Node tail;
+    private int size;
+    
+    public MyDoublyLinkedList() {
+    }
+
+    // ارجاع كم عنصر داخل اللينكد ليست .
+    public int getSize (){
+        return this.size;
+    }
+    // فحص اذا اللينكد ليست فارغه او لا .
+    public boolean isEmpty (){
+        return size == 0;
+    }
+    // ميثود يعمل على اضافه العناصر عن طريق المستخدم .
+    public void add (E e){
+        Node newNode = new Node(e);
+
+        if (isEmpty()){
+            head = tail = newNode;
+        }
+        else {
+            tail.next = newNode;
+            newNode.prev = tail;
+            tail = newNode;
+        }
+        size += 1;
+    }
+    // ميثود يعمل على اضافه عنصر في المكان الي بعثه المستخدم .
+    public void addByIndex (E e ,int index){
+        Node newNode = new Node(e);
+
+        //في حال كانت اللينكد ليست فارغه بالتالي راح استدعي الميثود add الجاهز وابعث القيمه معاه .
+        if (isEmpty()){
+            add(e);
+        }
+        // تحديد مكان اضافه العنصر .
+        Node curr = head;
+        while (curr != null && index-- > 1){
+            curr = curr.next;
+        }
+        // ربط العنصر الجديد .
+        curr.prev.next = newNode;
+        newNode.prev = curr.prev;
+        newNode.next = curr;
+        curr.prev = newNode;
+
+        size += 1;
+    }
+    // اضافه عنصر على اول اللينكد ليست .
+    public void addFirst (E e){
+        Node newNode = new Node(e);
+
+        if (isEmpty()){
+            add(e);
+            return;
+        }
+        newNode.next = head;
+        head.prev = newNode;
+        head = newNode;
+        size += 1;
+    }
+    // حذف اخر عنصر ب اللينكد ليست .
+    public void removeLast(){
+        if (isEmpty()){
+            return;
+        }
+
+        tail = tail.prev;
+        tail.next = null;
+
+        size -= 1;
+    }
+
+    //حذف اول عنصر باللينكد ليست .
+    public void removeFirst (){
+        if (isEmpty()){
+            return;
+        }
+
+        head = head.next;
+        head.prev = null;
+
+        size -= 1;
+    }
+
+    //حذف عنصر بالمكان بالمكان المدخل من قبل المستخدم .
+    public void removeByIndex (int index){
+        if (isEmpty()){
+            return;
+        }
+
+        Node curr =head;
+        while (curr != null && index-- > 1){
+            curr = curr.next;
+        }
+        curr.prev.next = curr.next;
+        curr.next.prev = curr.prev;
+
+        size -= 1;
+    }
+
+    // ايجاد العنصر الموجود بالوسط .
+    public Node findMiddle (Node temp){
+        if (isEmpty()){
+            return null;
+        }
+        Node fast = head;
+        Node slow = head;
+
+        while (fast != null && slow != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+
+    // حذف العنصر الموجود بالوسط .
+    public void removeByMiddle (){
+       Node temp = findMiddle(head);
+       temp.prev.next = temp.next;
+       temp.next.prev = temp.prev;
+    }
+
+    //حذف جميع العناصر .
+    public void removeAll (){
+        if (isEmpty()){
+            return;
+        }
+        head = tail = null;
+        size = 0;
+    }
+
+    //ايجاد اكبر عنصر .
+    public int maxNumber (){
+        Node curr = head;
+        int max = Integer.MIN_VALUE;
+        while (curr != null){
+            if ((Integer)curr.getData() > max){
+                max = (Integer) curr.getData();
+            }
+            curr = curr.next;
+        }
+        return max;
+    }
+
+    // ايجاد اصغر عنصر .
+    public int minNumber (){
+        Node curr = head;
+        int min = Integer.MAX_VALUE;
+        while (curr != null){
+            if ((Integer)curr.getData() < min){
+                min = (Integer)curr.getData();
+            }
+            curr = curr.next;
+        }
+        return min;
+    }
+
+    // A function to reverse the list and set the head pointer to the end of the list so that we do not need to return anything.
+     public void reverse() {
+        Node first = null;
+        Node second = head;
+
+        while (second != null) {
+            first = second.prev;
+            second.prev = second.next;
+            second.next = first;
+            second = second.prev;
+        }
+        if (first != null) {
+            head = first.prev;
+        }
+    }
+
+    // طباعة جميع العناصر في اللينكد ليست .
+    public void printAllElement (){
+        Node curr = head;
+        System.out.print("[ ");
+
+        while (curr != null){
+            System.out.print((Integer)curr.getData() + " ,");
+            curr = curr.next;
+        }
+        System.out.println(" ]");
+    }
+
+}
